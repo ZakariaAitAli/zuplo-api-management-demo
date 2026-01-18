@@ -115,6 +115,99 @@
         "tags": ["Todo"]
       }
     },
+    "/hello": {
+      "get": {
+        "summary": "Hello world",
+        "description": "Returns a plain text response from a custom module handler.",
+        "responses": {
+          "200": {
+            "description": "Plain text response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "hello": {
+                    "value": "What zup?"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "hello-world",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "default",
+            "module": "$import(./modules/hello-world)"
+          }
+        },
+        "tags": ["Demo"]
+      }
+    },
+    "/mock-todos": {
+      "get": {
+        "summary": "Mock todos",
+        "description": "Returns the example payload without calling the upstream API.",
+        "responses": {
+          "200": {
+            "description": "A list of todos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Todo"
+                  }
+                },
+                "examples": {
+                  "mixed_todos": {
+                    "summary": "A list of todos with different completion states",
+                    "value": [
+                      {
+                        "id": 1,
+                        "title": "Buy groceries",
+                        "completed": false,
+                        "userId": 123
+                      },
+                      {
+                        "id": 2,
+                        "title": "Write documentation",
+                        "completed": true,
+                        "userId": 456
+                      },
+                      {
+                        "id": 3,
+                        "title": "Review pull requests",
+                        "completed": false,
+                        "userId": 123
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "mock-todos",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "policies": {
+            "inbound": ["mock-api-inbound"]
+          },
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://todo.zuplo.io"
+            }
+          }
+        },
+        "tags": ["Demo"]
+      }
+    },
     "/todos/{id}": {
       "put": {
         "summary": "Update a todo",
