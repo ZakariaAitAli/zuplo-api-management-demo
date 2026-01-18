@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "zudoku dev --zuplo",
-    "build": "zudoku build --zuplo"
+    "build": "zudoku build --zuplo",
+    "lint": "eslint"
   },
   "dependencies": {
     "react": "^19",
